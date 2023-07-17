@@ -1,9 +1,12 @@
 import { SignIn, SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { RouterOutputs, api } from "~/utils/api";
+import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Image from "next/image";
+import { LoadingPage } from "~/components/loading";
 dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
@@ -16,10 +19,12 @@ const CreatePostWizard = () => {
   
   return (
     <div className="flex w-full gap-3">
-      <img 
+      <Image 
         src={user.profileImageUrl} 
         alt="Profile Image" 
         className="h-14 w-14 rounded-full"
+        width={56}
+        height={56}
       />
       <input placeholder="Type some emojis" className="bg-transparent flex-grow outline-none" />
     </div>
@@ -32,7 +37,13 @@ const PostView = (props: PostWithAuthor) => {
   const { post, author } = props;
   return (
   <div key={post.id} className="flex gap-3 p-3 border-b border-slate-400"> 
-    <img src={author.profileImageUrl} alt="Profile Image" className="h-12 w-12 rounded-full" />
+    <Image 
+      src={author.profileImageUrl}  
+      className="h-12 w-12 rounded-full" 
+      alt={`@${author.username}'s profile picture`}
+      width={56}
+      height={56}
+    />
     <div className="flex flex-col">
       <div className="flex gap-1 text-slate-400">
         <span>{`@${author.username} ·`}</span>
@@ -46,11 +57,33 @@ const PostView = (props: PostWithAuthor) => {
   )
 }
 
-export default function Home() {
-  const user = useUser();
-
-  const { data } = api.posts.getAll.useQuery(); //tRPC hook to run the query on the server
+const Feed = () => {
+  const { data, isLoading: postsLoading } = api.posts.getAll.useQuery(); //tRPC hook to run the query on the server
     
+  if (postsLoading) return <div><LoadingPage/></div>;
+
+  if (!data) return <div>Something went wrong</div>;
+
+  return (
+    <div className="flex flex-col">
+      {data?.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost.post.id}/>
+      ))}
+    </div>
+  )
+}
+
+
+export default function Home() {
+  const { user, isLoaded: userLoaded, isSignedIn } = useUser();
+
+  // tRPC hook to run the query on the server
+  // fetching now to cache the data for later
+  const { data } = api.posts.getAll.useQuery(); 
+  
+  // return empty div if user is not loaded
+  if (!userLoaded) return <div />;
+
   return (
     <>
       <Head>
@@ -61,14 +94,16 @@ export default function Home() {
       <main className="flex justify-center h-screen">
         <div className="h-full w-full md:max-w-2xl border-x border-slate-400">
           <div className="flex border-b border-slate-400 p-4">
-          {!user.isSignedIn && <SignInButton />}
-          {user.isSignedIn && <CreatePostWizard />}
+          {!isSignedIn && (
+          <div className="flex flex-grow gap-3">
+            <SignInButton />
           </div>
-          <div className="flex flex-col">
-            {data?.map((fullPost) => (
-              <PostView {...fullPost} key={fullPost.post.id}/>
-            ))}
+          )}
+          {isSignedIn && <CreatePostWizard />}
           </div>
+          
+          <Feed />
+          
           <div><UserButton></UserButton></div>
         </div>
       </main>
