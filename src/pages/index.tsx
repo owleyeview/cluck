@@ -24,9 +24,14 @@ const CreatePostWizard = () => {
       setEmoji("");
       ctx.posts.getAll.refetch();
     },
-    onError: () => {
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors?.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
       toast.error("Invalid input.  Emojis only!");
       setEmoji("");
+      }
     }
   });
 
@@ -64,13 +69,13 @@ const PostView = (props: PostWithAuthor) => {
     <Image 
       src={author.profileImageUrl}  
       className="h-12 w-12 rounded-full" 
-      alt={`@${author.username}'s profile picture`}
+      alt={`@${author.username!}'s profile picture`}
       width={56}
       height={56}
     />
     <div className="flex flex-col">
       <div className="flex gap-1 text-slate-400">
-        <span>{`@${author.username} ·`}</span>
+        <span>{`@${author.username!} ·`}</span>
         <span className="font-thin">{`${dayjs(post.createdAt).fromNow()}`}</span>
       </div>
       <span className="text-2xl">
