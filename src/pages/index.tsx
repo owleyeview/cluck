@@ -8,6 +8,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import { LoadingPage } from "~/components/loading";
 import { useState } from "react";
+import toast from "react-hot-toast";
 dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
@@ -23,6 +24,10 @@ const CreatePostWizard = () => {
       setEmoji("");
       ctx.posts.getAll.refetch();
     },
+    onError: () => {
+      toast.error("Invalid input.  Emojis only!");
+      setEmoji("");
+    }
   });
 
   console.log(user);
