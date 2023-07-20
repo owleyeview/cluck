@@ -20,14 +20,15 @@ const CreatePostWizard = () => {
   const ctx = api.useContext();
 
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       setEmoji("");
-      ctx.posts.getAll.refetch();
+      await ctx.posts.getAll.refetch();
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors?.content;
       if (errorMessage && errorMessage[0]) {
         toast.error(errorMessage[0]);
+        setEmoji("");
       } else {
       toast.error("Invalid input.  Emojis only!");
       setEmoji("");
