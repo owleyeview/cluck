@@ -17,18 +17,18 @@ const ProfilePage: NextPage<{username: string }> = ({username}) => {
   return (
     <>
       <Head>
-        <title>{data.username}</title>
+        <title>{data.username!}</title>
       </Head>
 <PageLayout>
     <div className="relative h-48 bg-slate-600">
       <Image 
         src={data.profileImageUrl}          
-        alt={`@${data.username}'s profile picture`}
+        alt={`@${data.username!}'s profile picture`}
         width={96}
         height={96}
         className="absolute bottom-0 left-0 -mb-[48px] ml-4 rounded-full border-4 border-black"
       />
-      <div>{data.username}</div>
+      <div>{data.username!}</div>
     </div>
 </PageLayout>    
 </>
