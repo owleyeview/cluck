@@ -102,7 +102,7 @@ const PostView = (props: PostWithAuthor) => {
         {/* using a Link component from Next.js instead of an <a> tag because 
         it prevents the routing from triggering a whole browser refresh
         , instead immediatly loading the next page */}
-        <Link href={`/@${author.username}`}>
+        <Link href={`/@${author.username!}`}>
           <span>{`@${author.username!} ·`}</span>
         </Link>
         <Link href={`/post/${post.id}`}>

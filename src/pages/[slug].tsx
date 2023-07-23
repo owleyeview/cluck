@@ -53,6 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const dehydratedState = ssg.dehydrate() as ExtendedDehydratedState;
   
   // manually stringifying the data
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   dehydratedState.json.queries[0].state.data = JSON.stringify(dehydratedState.json.queries[0].state.data);
 
   return {
