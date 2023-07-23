@@ -1,8 +1,10 @@
 import Head from "next/head";
-import { GetStaticProps, NextPage } from "next";
+import Image from "next/image";
+import type { GetStaticProps, NextPage } from "next";
 import { api } from "~/utils/api";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { DehydratedState } from "@tanstack/react-query";
+import { PageLayout } from "~/components/layout";
 
 const ProfilePage: NextPage<{username: string }> = ({username}) => {
 
@@ -12,16 +14,24 @@ const ProfilePage: NextPage<{username: string }> = ({username}) => {
   
   if (!data) return <div>404</div>;
 
-
   return (
     <>
       <Head>
         <title>{data.username}</title>
       </Head>
-      <main className="flex justify-center h-screen">
-          <div>{data.username}</div>
-      </main>
-    </>
+<PageLayout>
+    <div className="relative h-48 bg-slate-600">
+      <Image 
+        src={data.profileImageUrl}          
+        alt={`@${data.username}'s profile picture`}
+        width={96}
+        height={96}
+        className="absolute bottom-0 left-0 -mb-[48px] ml-4 rounded-full border-4 border-black"
+      />
+      <div>{data.username}</div>
+    </div>
+</PageLayout>    
+</>
   );
 };
 
