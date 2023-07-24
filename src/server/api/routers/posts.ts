@@ -22,16 +22,24 @@ const addUserDataToPosts =async (posts: Post[]) => {
         if (!author) {
             throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: `Author not found for post ${post.id}`,
+                message: `Author for post not found. POST ID: ${post.id}, USER ID: ${post.authorId}`,
             });
         }
-
-
+        if (!author.username) {
+          // user the ExternalUsername
+          if (!author.externalUsername) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: `Author has no GitHub Account: ${author.id}`,
+            });
+          }
+          author.username = author.externalUsername;
+        }
         return {
             post,
             author: {
                 ...author,
-                username: author.username,
+                username: author.username ?? "(username not found)",
             },
         };
     }   
@@ -45,6 +53,20 @@ const ratelimit = new Ratelimit({
 });
 
 export const postsRouter = createTRPCRouter({
+    
+    getById: publicProcedure
+        .input(z.object({ id: z.string() }))
+        .query(async ({ ctx, input }) => {
+            const post = await ctx.prisma.post.findUnique({ 
+                where: { id: input.id },
+            });
+            
+            if (!post) throw new TRPCError({code: "NOT_FOUND"});
+            
+            return (await addUserDataToPosts([post]))[0];
+        }),
+    
+    
     getAll: publicProcedure.query(async ({ ctx }) => {
         const posts = await ctx.prisma.post.findMany({
             take: 100,
