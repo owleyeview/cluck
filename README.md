@@ -1,28 +1,27 @@
-# Create T3 App
+# Educational T3 App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This project is an educational implementation of the [T3 Stack](https://create.t3.gg/), bootstrapped with `create-t3-app`. The project was built primarily for learning purposes and was developed following this tutorial: [Build with T3 Stack](https://youtu.be/YkOSUVzOAA4). The tutorial offered valuable exposure to a new tech stack, providing first-hand experience with the different technologies it utilizes.
 
-## What's next? How do I make an app with this?
+## The Learning Journey
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This project was kept as simple as possible, serving as a scaffold for future enhancements and to allow for a focused learning experience. If you are unfamiliar with the various technologies used, you are encouraged to refer to their respective docs.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Technologies used in this project:
 
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
+- [Clerk](https://clerk.com)
 - [Prisma](https://prisma.io)
+- [Planetscale](https://planetscale.com)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 
-## Learn More
+## Expand Your Knowledge
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+To learn more about the [T3 Stack](https://create.t3.gg/), you can check the following resources:
 
 - [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Deployment
 
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+This project was built for educational purposes, but has been deployed on [Vercel](https://create.t3.gg/en/deployment/vercel).
