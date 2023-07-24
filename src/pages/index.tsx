@@ -1,4 +1,4 @@
-import { SignIn, SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
@@ -99,11 +99,11 @@ const Feed = () => {
 
 
 export default function Home() {
-  const { user, isLoaded: userLoaded, isSignedIn } = useUser();
+  const { isLoaded: userLoaded, isSignedIn } = useUser();
 
   // tRPC hook to run the query on the server
   // fetching now to cache the data for later
-  const { data } = api.posts.getAll.useQuery();
+  api.posts.getAll.useQuery();
 
   // return empty div if user is not loaded
   if (!userLoaded) return <div />;

@@ -1,11 +1,9 @@
 import Head from "next/head";
-import Image from "next/image";
 import type { GetStaticProps, NextPage } from "next";
 import { api } from "~/utils/api";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { DehydratedState } from "@tanstack/react-query";
 import { PageLayout } from "~/components/layout";
-import { LoadingPage } from "~/components/loading";
 import { PostView } from "~/components/postview";
 
 const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
@@ -28,9 +26,6 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
   );
 };
 
-// satisfying the type checker to enable my manual Stringify below
-type ExtendedDehydratedState = DehydratedState & { json: any };
-
 export const getStaticProps: GetStaticProps = async (context) => {
   const ssg = generateSSGHelper();
 
@@ -49,6 +44,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       trpcState: ssg.dehydrate(),
       id,
     },
+    // could include custom refetch and revalidate times here 
+    // if the data might change
   };
 };
 

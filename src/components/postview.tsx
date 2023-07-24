@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { RouterOutputs } from "~/utils/api";
-import dayjs, { extend } from "dayjs";
+import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 
@@ -15,7 +15,7 @@ export const PostView = (props: PostWithAuthor) => {
     <Image 
       src={author.profileImageUrl}  
       className="h-12 w-12 rounded-full" 
-      alt={`@${author.username!}'s profile picture`}
+      alt={`@${author.username}'s profile picture`}
       width={56}
       height={56}
     />
@@ -24,8 +24,8 @@ export const PostView = (props: PostWithAuthor) => {
         {/* using a Link component from Next.js instead of an <a> tag because 
         it prevents the routing from triggering a whole browser refresh
         , instead immediatly loading the next page */}
-        <Link href={`/@${author.username!}`}>
-          <span>{`@${author.username!} ·`}</span>
+        <Link href={`/@${author.username}`}>
+          <span>{`@${author.username} ·`}</span>
         </Link>
         <Link href={`/post/${post.id}`}>
           <span className="font-thin">{`${dayjs(post.createdAt).fromNow()}`}</span>
